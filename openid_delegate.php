@@ -12,7 +12,7 @@
 * changing your OpenID URL(s).
 *
 * @author     Will Daniels <mail@willdaniels.co.uk>
-* @version    0.1 (proto)
+* @version    0.2 (proto)
 * @copyright  Copyright (C) 2009 Will Daniels. All rights reserved.
 * @license    GNU/GPL
 */
@@ -29,33 +29,17 @@ jimport('joomla.event.plugin');
 class plgSystemOpenID_Delegate extends JPlugin
 {
 	/**
-	* Constructor
-	*
-	* For php4 compatability we must not use the __constructor as a constructor
-	* for plugins because func_get_args ( void ) returns a copy of all passed
-	* arguments NOT references.  This causes problems with cross-referencing
-	* necessary for the observer design pattern.
-	*/
-	function plgSystemOpenID_Delegate(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-	}
-
-	/**
 	* System event onAfterInitialise; invoked automatically by Joomla!
 	*
 	* If we're not in the admin area, the delegation variables have been set
 	* and we're serving a HTML document, then we add the openid delegation 
 	* links to the document's head element here.
-	*
-	* @todo Check whether this is the best event to do this in!
-	* @todo Find out if we can check for admin without global variable
 	*/
 	function onAfterInitialise()
 	{
-		global $mainframe;
+		$app = JFactory::getApplication();
 
-		if(!$mainframe->isAdmin())
+		if(!$app->isAdmin())
 		{
 			$server = $this->params->get('openid_link_server', '');
 			$delegate = $this->params->get('openid_link_delegate', '');
